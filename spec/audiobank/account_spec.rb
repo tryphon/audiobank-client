@@ -11,7 +11,7 @@ describe Audiobank::Account do
   describe "#get" do
     
     it "should send get request to the specified url with auth_token" do
-      FakeWeb.register_uri :get, "http://audiobank.tryphon.org/dummy?auth_token=secret", :body => 'dummy'
+      FakeWeb.register_uri :get, "http://audiobank.tryphon.eu/dummy?auth_token=secret", :body => 'dummy'
       subject.get("/dummy").body.should == 'dummy'
     end
 
@@ -20,7 +20,7 @@ describe Audiobank::Account do
   describe "#post" do
     
     it "should send post request to the specified url with auth_token" do
-      FakeWeb.register_uri :post, "http://audiobank.tryphon.org/dummy?auth_token=secret", :body => 'dummy'
+      FakeWeb.register_uri :post, "http://audiobank.tryphon.eu/dummy?auth_token=secret", :body => 'dummy'
       subject.post("/dummy", :key => "value")
       FakeWeb.last_request.body.should == '{"key":"value"}'
     end
@@ -30,16 +30,16 @@ describe Audiobank::Account do
   describe "#document" do
 
     let(:json_response) {
-      '{"download_count":5,"description":"Dummy","length":1744,"cast":"8a9cygzn","id":721,"upload":"ftp://audiobank.tryphon.org/pqxijmcetmodn25s/","title":"Test"}'
+      '{"download_count":5,"description":"Dummy","length":1744,"cast":"8a9cygzn","id":721,"upload":"ftp://audiobank.tryphon.eu/pqxijmcetmodn25s/","title":"Test"}'
     }
 
-    it "should retrieve invoke http://audiobank.tryphon.org/documents/<id>.json" do
-      FakeWeb.register_uri :get, "http://audiobank.tryphon.org/documents/1.json?auth_token=secret", :body => json_response
+    it "should retrieve invoke http://audiobank.tryphon.eu/documents/<id>.json" do
+      FakeWeb.register_uri :get, "http://audiobank.tryphon.eu/documents/1.json?auth_token=secret", :body => json_response
       subject.document(1).title.should == "Test"
     end
 
     it "should return nil if documet is not found" do
-      FakeWeb.register_uri :get, "http://audiobank.tryphon.org/documents/1.json?auth_token=secret", :status => ["404", "Not Found"]
+      FakeWeb.register_uri :get, "http://audiobank.tryphon.eu/documents/1.json?auth_token=secret", :status => ["404", "Not Found"]
       subject.document(1).should be_nil
     end
 

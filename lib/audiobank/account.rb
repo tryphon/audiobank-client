@@ -2,7 +2,7 @@ require 'httparty'
 
 class Audiobank::Account
   include HTTParty
-  base_uri 'audiobank.tryphon.org'
+  base_uri 'audiobank.tryphon.eu'
   headers "Content-Type" => "application/json"
   format :json
 
