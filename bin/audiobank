@@ -2,6 +2,9 @@
 
 require 'audiobank-client'
 
-account = Audiobank::Account.new("35a19572e898f433aa9dc534653a3566")
-Audiobank::Account.base_uri "audiobank.local"
-account.documents.import ARGV.first
+# Audiobank::Account.base_uri "audiobank.local"
+
+account = Audiobank::Account.new(ARGV.shift)
+while not ARGV.empty?
+  account.documents.import ARGV.shift
+end
