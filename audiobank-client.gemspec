@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency "httparty"
-  gem.add_runtime_dependency "activesupport", "~> 3.2.13"
+  gem.add_runtime_dependency "activesupport", "< 4"
   gem.add_runtime_dependency "json"
   gem.add_runtime_dependency "virtus"
   gem.add_runtime_dependency "null_logger"
