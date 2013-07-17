@@ -19,6 +19,7 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency "httparty"
   gem.add_runtime_dependency "activesupport"
+  gem.add_runtime_dependency "json"
   gem.add_runtime_dependency "virtus"
   gem.add_runtime_dependency "null_logger"
 

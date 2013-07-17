@@ -1,6 +1,7 @@
 require "audiobank/client/version"
 
 require 'logger'
+require 'json'
 
 require "virtus"
 
