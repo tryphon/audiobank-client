@@ -1,5 +1,5 @@
 class Audiobank::Documents
-  
+
   attr_accessor :account
 
   def initialize(account)
@@ -13,14 +13,15 @@ class Audiobank::Documents
     post "/documents.json", :document => attributes do |response|
       Audiobank::Document.new(response).tap do |document|
         document.account = account
+        Audiobank::Client.logger.debug "Created document has id #{document.id}"
       end
     end
   end
 
   def import(file, attributes = {})
-    attributes = { 
-      :title => File.basename(file, File.extname(file)), 
-      :description => "Uploaded at #{Time.now}" 
+    attributes = {
+      :title => File.basename(file, File.extname(file)),
+      :description => "Uploaded at #{Time.now}"
     }.merge(attributes)
 
     create(attributes).upload!(file).confirm

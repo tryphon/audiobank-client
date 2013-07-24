@@ -35,7 +35,9 @@ class Audiobank::Account
   def document(id)
     Audiobank::Client.logger.info "Request document information : #{id}"
     get "/documents/#{id}.json" do |response|
-      Audiobank::Document.new(response) if response.code == 200
+      Audiobank::Document.new(response).tap do |document|
+        document.account = self
+      end if response.code == 200
     end
   end
 

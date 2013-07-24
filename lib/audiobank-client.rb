@@ -2,10 +2,9 @@ require "audiobank/client/version"
 
 require 'logger'
 require 'json'
-
-require "virtus"
-
-require "null_logger"
+require 'virtus'
+require 'null_logger'
+require 'trollop'
 
 begin
   require "active_support/core_ext/module/attribute_accessors"
@@ -33,3 +32,5 @@ end
 require "audiobank/document"
 require "audiobank/documents"
 require "audiobank/account"
+require "audiobank/client/local_file"
+require "audiobank/client/cli"
