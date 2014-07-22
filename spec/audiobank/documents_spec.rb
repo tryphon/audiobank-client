@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Audiobank::Documents do
-  
+
   let(:account) { Audiobank::Account.new "secret" }
 
   subject { Audiobank::Documents.new account }
@@ -9,7 +9,7 @@ describe Audiobank::Documents do
   before(:each) do
     FakeWeb.allow_net_connect = false
   end
-  
+
   describe "#create" do
 
     it "should post to /documents.json the document attributes" do
@@ -36,21 +36,16 @@ describe Audiobank::Documents do
 
     before do
       subject.stub :create => document
-      document.stub :upload! => document, :confirm => true
+      document.stub :import => true
     end
-    
+
     it "should create a Document with specified attributes" do
       subject.should_receive(:create).with(hash_including(:title => "dummy")).and_return(document)
       subject.import file, :title => "dummy"
     end
 
-    it "should upload the specified file" do
-      document.should_receive(:upload!).with(file)
-      subject.import file
-    end
-
-    it "should confirm the upload" do
-      document.should_receive(:confirm)
+    it "should import the document" do
+      document.should_receive(:import)
       subject.import file
     end
 
@@ -65,5 +60,5 @@ describe Audiobank::Documents do
     end
 
   end
-  
+
 end
