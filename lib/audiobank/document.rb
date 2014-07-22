@@ -24,12 +24,37 @@ class Audiobank::Document
     @upload_uri ||= URI.parse(upload)
   end
 
-  def upload!(file)
-    Audiobank::Client.logger.debug "Upload #{file} in document #{id}"
-    Net::FTP.open(upload_uri.host) do |ftp|
-      ftp.login
-      ftp.chdir upload_uri.path
-      ftp.putbinaryfile file
+  def upload!(file, options = {})
+    Audiobank::Client.logger.debug "Upload #{file} in document #{id} (#{upload_uri})"
+
+    retry_count = (options[:retries] or 1)
+
+    progress_bar = ProgressBar.new("Document #{id}", File.size(file))
+
+    begin
+      Net::FTP.open(upload_uri.host) do |ftp|
+        ftp.debug_mode = options[:debug]
+        ftp.login
+        ftp.chdir upload_uri.path
+        ftp.resume = options[:resume]
+        ftp.passive = true
+        ftp.putbinaryfile file do |buf|
+          progress_bar.inc buf.size
+        end
+      end
+
+      progress_bar.finish
+    rescue => e
+      Audiobank::Client.logger.debug "Upload #{file} failed #{e}"
+      if retry_count > 0
+        retry_count -= 1
+        progress_bar.set 0
+        Audiobank::Client.logger.debug "Retry in 30 seconds"
+        sleep 30
+        retry
+      else
+        return nil
+      end
     end
 
     self
@@ -40,8 +65,8 @@ class Audiobank::Document
     account.post "/documents/#{id}/upload/confirm.json"
   end
 
-  def import(file)
-    upload!(file).confirm
+  def import(file, options = {})
+    upload!(file, options).try(:confirm)
   end
 
 end

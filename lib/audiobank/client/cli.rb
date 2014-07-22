@@ -80,8 +80,10 @@ EOS
 
     def import
       arguments.each do |filename|
-        output.puts "Import #{filename}"
-        Audiobank::Client::LocalFile.new(filename).import(account)
+        unless filename =~ /.audiobank$/
+          output.puts "Import #{filename}"
+          Audiobank::Client::LocalFile.new(filename).import(account)
+        end
       end
     end
 

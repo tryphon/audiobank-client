@@ -18,13 +18,13 @@ class Audiobank::Documents
     end
   end
 
-  def import(file, attributes = {})
+  def import(file, attributes = {}, options = {})
     attributes = {
       :title => File.basename(file, File.extname(file)),
       :description => "Uploaded at #{Time.now}"
     }.merge(attributes)
 
-    create(attributes).upload!(file).confirm
+    create(attributes).import(file)
   end
 
 end

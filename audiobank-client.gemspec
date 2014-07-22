@@ -23,6 +23,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "virtus"
   gem.add_runtime_dependency "null_logger"
   gem.add_runtime_dependency "trollop"
+  gem.add_runtime_dependency "progressbar"
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "simplecov"
