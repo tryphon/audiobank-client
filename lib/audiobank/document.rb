@@ -24,12 +24,20 @@ class Audiobank::Document
     @upload_uri ||= URI.parse(upload)
   end
 
+  class NullProgressBar
+
+    def inc(size); end
+    def set(size); end
+    def finish; end
+
+  end
+
   def upload!(file, options = {})
     Audiobank::Client.logger.debug "Upload #{file} in document #{id} (#{upload_uri})"
 
-    retry_count = (options[:retries] or 1)
+    retry_count = (options[:retries] or 0)
 
-    progress_bar = ProgressBar.new("Document #{id}", File.size(file))
+    progress_bar = (options[:progress] ? ProgressBar.new("Document #{id}", File.size(file)) : NullProgressBar.new)
 
     begin
       Net::FTP.open(upload_uri.host) do |ftp|
@@ -38,7 +46,7 @@ class Audiobank::Document
         ftp.chdir upload_uri.path
         ftp.resume = options[:resume]
         ftp.passive = true
-        ftp.putbinaryfile file do |buf|
+        ftp.putbinaryfile file, id.to_s do |buf|
           progress_bar.inc buf.size
         end
       end

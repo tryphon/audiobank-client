@@ -54,7 +54,7 @@ module Audiobank::Client
     end
 
     def import_options
-      { :resume => true, :debug => true, :retries => 10 }
+      { :resume => true, :debug => true, :retries => 10, :progress => true }
     end
 
     def import(account)
@@ -75,7 +75,6 @@ module Audiobank::Client
           raise "Document #{document_id} not found"
         end
       else
-        puts import_options.inspect
         imported = account.documents.import uploaded_file, { :title => default_title }, import_options
       end
 
