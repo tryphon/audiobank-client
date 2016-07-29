@@ -24,7 +24,7 @@ class Audiobank::Documents
       :description => "Uploaded at #{Time.now}"
     }.merge(attributes)
 
-    create(attributes).import(file)
+    create(attributes).import(file, options)
   end
 
 end
