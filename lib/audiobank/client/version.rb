@@ -1,5 +1,5 @@
 module Audiobank
   module Client
-    VERSION = "0.5"
+    VERSION = "0.6"
   end
 end
